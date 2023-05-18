@@ -22,6 +22,12 @@ const http = new Http({
   baseUrl: {
     dev: requestUrl,
     pro: requestUrl
+  },
+  debug: true,
+  tokenValue: () => {
+    return new Promise((resolve, reject) => {
+      resolve('111111');
+    });
   }
 })
 
@@ -29,27 +35,21 @@ const onShow = ref(false)
 
 // 主题列表
 const postList = ref()
-http.get('/posts', {}, {
-  task_id: '1'
-}).then(res => {
+http.get('/posts').then(res => {
   postList.value = res
   onShow.value = true
 })
 
 // 主题详情
 const postDetail = ref()
-http.get('/posts/1', {}, {
-  task_id: '2'
-}).then(res => {
+http.get('/posts/1').then(res => {
   postDetail.value = res
   onShow.value = true
 })
 
 // 用户列表
 const userList = ref()
-http.get('/users', {}, {
-  task_id: '3'
-}).then(res => {
+http.get('/users').then(res => {
   userList.value = res
   onShow.value = true
 })

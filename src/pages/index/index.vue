@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { Http } from 'lwu-request'
+import { Http, type BeforeRequestCallbackResult, type AfterRequestCallbackResult } from 'lwu-request'
 
 const requestUrl = 'https://jsonplaceholder.typicode.com'
 const http = new Http({
@@ -23,7 +23,17 @@ const http = new Http({
     dev: requestUrl,
     pro: requestUrl
   },
-  debug: true,
+  before: (res: BeforeRequestCallbackResult) => {
+    // console.log(res, '请求前拦截');
+    http.setHeader({
+      ...res.header,
+      test: 222
+    })
+  },
+  after: (res: AfterRequestCallbackResult) => {
+    console.log(res, '请求后拦截');
+  },
+  debug: false,
   tokenValue: () => {
     return new Promise((resolve, reject) => {
       resolve('111111');

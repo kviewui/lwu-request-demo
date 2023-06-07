@@ -10,4 +10,6 @@ onHide(() => {
   console.log("App Hide");
 });
 </script>
-<style></style>
+<style>
+@import url('@kviewui/css/dist/index.css');
+</style>

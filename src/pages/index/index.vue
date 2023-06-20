@@ -27,19 +27,59 @@ const http = new Http({
     // console.log(res, '请求前拦截');
     http.setHeader({
       ...res.header,
-      test: 222
+      // test: 222
     })
   },
   after: (res: AfterRequestCallbackResult) => {
-    console.log(res, '请求后拦截');
+    // console.log(res, '请求后拦截');
+  },
+  networkExceptionHandle: () => {
+    console.log('断网了啊');
+  },
+  errorHandleByCode: (code) => {
+    console.log(code);
+    if (code === 408) {
+      console.log('请求超时了');
+    } else if (code === 1009) {
+      console.log('客户端断网了');
+    }
   },
   debug: false,
+  // timeout: 10,
+  takeTokenMethod: 'body',
+  takenTokenKeyName: 'user_token',
   tokenValue: () => {
     return new Promise((resolve, reject) => {
+      // 模拟原来的token
       resolve('111111');
+    });
+  },
+  xhrCodeName: 'code',
+  tokenExpiredCode: 0,
+  tokenExpiredCodeType: 'apiResponseCode',
+  autoRefreshToken: true,
+  refreshTokenHandle: (refreshToken?: string) => {
+    // 打印旧的Token
+    console.log(refreshToken, '旧的token');
+    return new Promise((resolve, reject) => {
+      // 模拟获取新的token
+      resolve('BbLKVJLO6PLrPxzZeXOa67ggPmdvXywm8vU4y59HbWY=');
     });
   }
 })
+
+http
+  .config({
+    domain: 'https://api.kags.cn'
+  })
+  .post('/v1/user/userinfo')
+
+// 清空 `domain` 防止污染后面的请求域名
+http.config({
+  domain: ''
+});
+
+console.log(http.uri(), '请求域名111111');
 
 const onShow = ref(false)
 

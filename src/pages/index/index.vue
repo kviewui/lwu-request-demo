@@ -81,6 +81,43 @@ http.config({
 
 console.log(http.uri(), '请求域名111111');
 
+let xhr = new XMLHttpRequest();
+xhr.open('post', `https://api.kags.cn/v1/user/userinfo`);
+xhr.setRequestHeader("Content-Type","application/json");
+xhr.timeout = 10;
+
+xhr.ontimeout = function () {
+	console.log('客户端请求超时了:xhr', xhr.status);
+}
+
+xhr.onerror = function () {
+	console.log('客户端断网了:xhr', xhr.status);
+}
+
+xhr.onprogress = function () {
+  console.log('LOADING', xhr.status);
+};
+
+xhr.onload = function () {
+  console.log('DONE', xhr.status);
+};
+console.log(xhr);
+xhr.send(JSON.stringify({
+	a: 1,
+	b: 2
+}));
+
+xhr = new XMLHttpRequest();
+xhr.open('get', `${http.uri()}/posts?a=2&b=3`);
+xhr.send();
+// xhr.onreadystatechange = () => {
+// 	console.log(xhr.readyState);
+// 	console.log(xhr.getAllResponseHeaders());
+// 	if (xhr.readyState === xhr.DONE) {
+// 		console.log(xhr.response);
+// 	}
+// }
+
 const onShow = ref(false)
 
 // 主题列表
